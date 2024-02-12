@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import {
-  Image,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 

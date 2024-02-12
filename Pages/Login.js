@@ -1,18 +1,42 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { handleSignup } from "../Functions/functions";
 
-export default Login = ({navigation}) => {
+export default Login = ({ navigation }) => {
+  const [studentId, setStudentId] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [loginSTate, setLoginSTate] = useState(false);
+  const [loginState, setLoginState] = useState("");
 
-    const handleLogin = () => {
-        console.log("Username:", username);
-        console.log("Password:", password);
-        setLoginSTate(!loginSTate);
-        navigation.navigate('Dashboard',{name: username, password: password})
-      };
+  const handleLogin = async() => {
+    console.log("StudentID:", studentId);
+    console.log("Username:", username);
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    const status = await handleSignup(studentId,username,email,password);
+    if(status.success){
+      console.log("Student Enrolled succesfully !!");
+      setLoginState("Student Enrolled succesfully !!")
+    }else if(status.notValid){
+      console.log("Not a valid student");
+      setLoginState("Not a valid student")
+    }else{
+      console.log(status.err);
+      setLoginState("Unknown error occured")
+    }
+
+    // navigation.navigate("Dashboard");
+  };
   return (
     <View style={styles.container}>
       <View style={styles.one}>
@@ -22,12 +46,24 @@ export default Login = ({navigation}) => {
       </View>
       <View style={styles.two}>
         <View style={styles.form}>
-          <Text style={styles.formHeader}>LOGIN</Text>
+          <Text style={styles.formHeader}>SIGN UP</Text>
           <TextInput
             style={styles.input}
-            placeholder="Username"
+            placeholder="Student ID"
+            onChangeText={(text) => setStudentId(text)}
+            value={studentId}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
             onChangeText={(text) => setUsername(text)}
             value={username}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="email"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
           />
           <TextInput
             style={styles.input}
@@ -37,18 +73,18 @@ export default Login = ({navigation}) => {
             secureTextEntry={true}
           />
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.buttonText}>LOG IN</Text>
+            <Text style={styles.buttonText}>SIGN UP</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.createAccount} onPress={handleLogin}>
             <Text style={styles.link1}>Don't have an account?</Text>
             <Text style={styles.link2}>SIgnup</Text>
           </TouchableOpacity>
+          <Text style={styles.link1}>{loginState}</Text>
         </View>
       </View>
     </View>
   );
-  
 };
 const styles = StyleSheet.create({
   container: {
