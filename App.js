@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./Pages/Login";
 import Dashboard from "./Pages/Dashboard";
-import FaceRec from "./Pages/Dashboard/FaceRec";
+import OTP from "./Pages/Dashboard/OTP";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,8 +18,8 @@ export default function App() {
         />
         <Stack.Screen
         options={{ headerShown: false }}
-          name="FaceRecognition" 
-          component={FaceRec}
+          name="OTP" 
+          component={OTP}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
@@ -10,32 +11,49 @@ import {
 import { handleSignup } from "../Functions/functions";
 
 export default Login = ({ navigation }) => {
+
   const [studentId, setStudentId] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loginState, setLoginState] = useState("");
+  const [loading,setLoading] = useState(false)
 
   const handleLogin = async() => {
     console.log("StudentID:", studentId);
     console.log("Username:", username);
     console.log("Email:", email);
     console.log("Password:", password);
-
-    const status = await handleSignup(studentId,username,email,password);
-    if(status.success){
-      console.log("Student Enrolled succesfully !!");
-      setLoginState("Student Enrolled succesfully !!")
-    }else if(status.notValid){
-      console.log("Not a valid student");
-      setLoginState("Not a valid student")
+    navigation.navigate("OTP");
+    
+    if(studentId && username && email && password){
+      setLoading(true);
+      const status = await handleSignup(studentId,username,email,password);
+      if(status.success){
+        console.log("Student Enrolled succesfully !!");
+        setLoginState("Student Enrolled succesfully !!")
+        setLoading(false);
+        navigation.navigate("Dashboard");
+      }else if(status.notValidEmail){
+        setLoginState("Not a valid email for this id")
+        setLoading(false);
+      }else if(status.notValid){
+        console.log("Not a valid student");
+        setLoginState("Not a valid student")
+        setLoading(false);
+      }else{
+        console.log(status.err);
+        setLoginState("Unknown error occured")
+        setLoading(false);
+      }
     }else{
-      console.log(status.err);
-      setLoginState("Unknown error occured")
+      setLoginState("Some fields are missing")
     }
+    setTimeout(() => {
+      setLoginState("");
+    }, 3000);
 
-    // navigation.navigate("Dashboard");
   };
   return (
     <View style={styles.container}>
@@ -72,8 +90,9 @@ export default Login = ({ navigation }) => {
             value={password}
             secureTextEntry={true}
           />
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <TouchableOpacity disabled={loading} style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.buttonText}>SIGN UP</Text>
+            <ActivityIndicator animating={loading} color={'#eee'}/>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.createAccount} onPress={handleLogin}>
@@ -142,6 +161,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   loginButton: {
+    flexDirection: "row",
+    paddingLeft: 25,
+    gap: 5,
     height: 40,
     width: "100%",
     backgroundColor: "#9c0f05",

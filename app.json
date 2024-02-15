@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TamarindHouse",
-    "slug": "TamarindHouse",
+    "slug": "tamarind-house",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.niranjanofficial.tamarindhouse"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "92819702-93a0-455e-930b-ebb7dcba0ab5"
+      }
+    },
+    "owner": "niranjan-official"
   }
 }
